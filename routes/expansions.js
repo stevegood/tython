@@ -32,29 +32,35 @@ const expansions = (app, get_session) => {
     
   app.route('/expansions/:id')
     .get((req, res) => {
-      const id = req.params.id
+      const id = Number(req.params.id)
       const session = get_session()
       session
         .run(
           `MATCH (expansion:Expansion)-[:Contains]->(item)
-           WHERE ID(expansion) = ${id}
-           RETURN expansion, item`
+           WHERE id(expansion) = {id}
+           RETURN expansion, item`,
+           { id }
         )
         .then(result => {
-          const expansion = result.records[0].get('expansion')
-          const ships = items_by_type(result.records, 'Ship')
-          const pilots = items_by_type(result.records, 'Pilot')
-          const upgrades = items_by_type(result.records, 'Upgrade')
+          console.log(result.summary)
+          if (result.records.length > 0) {
+            const expansion = result.records[0].get('expansion')
+            const ships = items_by_type(result.records, 'Ship')
+            const pilots = items_by_type(result.records, 'Pilot')
+            const upgrades = items_by_type(result.records, 'Upgrade')
+              
+            session.close()
             
-          session.close()
-          
-          res.send({
-            id: expansion.identity.low,
-            ...expansion.properties,
-            pilots,
-            ships,
-            upgrades
-          })
+            res.send({
+              id: expansion.identity.low,
+              ...expansion.properties,
+              pilots,
+              ships,
+              upgrades
+            })
+          } else {
+            res.status(404).end()
+          }
         })
     })
   
