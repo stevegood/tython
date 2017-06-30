@@ -3,4 +3,4 @@ Backend application for Deep Core
 
 # Data Model
 
-![Tyhon Data Model](data_model.jpg)
+![Tyhon Data Model](data_model.png)
