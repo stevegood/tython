@@ -17,23 +17,23 @@ All things saved by users.
 
 ```json
 {
-  "id": 0,
-  "owner": "some-user",
+  "_id": "595d591f82cfa10d304f1fcb",
+  "owner": "stevegood",
   "faction": "scum",
   "name": "Worlds list",
   "points": 98,
   "pilots": [{
-    "pilot_id": 171,
-    "upgrades": [{
-      "upgrade_id": 0
-    }, {
-      "upgrade_id": 2
-    }]
+    "pilot": "595d591f82cfa10d304f1fcf",
+    "upgrades": [
+      "595d591f82cfa10d304f1fca",
+      "595d591f82cfa10d304f1fcb"
+    ]
   }, {
-    "pilot_id": 172,
-    "upgrades": [{
-      "upgrade_id": 3
-    }]
+    "pilot": "595d591f82cfa10d304f1fcx",
+    "upgrades": [
+      "595d591f82cfa10d304f1fca",
+      "595d591f82cfa10d304f1fcb"
+    ]
   }]
 }
 ```
@@ -42,11 +42,35 @@ All things saved by users.
 
 ```json
 {
-  "owner": "some-user",
-  "expansions": [0, 1, 2, 3, 4],
-  "pilots": [0, 1, 2, 3, 4],
-  "ships": [0, 1, 2, 3, 4],
-  "upgrades": [0, 1, 2, 3, 4]
+  "owner": "stevegood",
+  "expansions": [
+    "595d591f82cfa10d304f1fca",
+    "595d591f82cfa10d304f1fcb",
+    "595d591f82cfa10d304f1fcc",
+    "595d591f82cfa10d304f1fcd",
+    "595d591f82cfa10d304f1fce"
+  ],
+  "pilots": [
+    "595d591f82cfa10d304f1fca",
+    "595d591f82cfa10d304f1fcb",
+    "595d591f82cfa10d304f1fcc",
+    "595d591f82cfa10d304f1fcd",
+    "595d591f82cfa10d304f1fce"
+  ],
+  "ships": [
+    "595d591f82cfa10d304f1fca",
+    "595d591f82cfa10d304f1fcb",
+    "595d591f82cfa10d304f1fcc",
+    "595d591f82cfa10d304f1fcd",
+    "595d591f82cfa10d304f1fce"
+  ],
+  "upgrades": [
+    "595d591f82cfa10d304f1fca",
+    "595d591f82cfa10d304f1fcb",
+    "595d591f82cfa10d304f1fcc",
+    "595d591f82cfa10d304f1fcd",
+    "595d591f82cfa10d304f1fce"
+  ]
 }
 ```
 
