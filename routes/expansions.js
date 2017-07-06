@@ -3,9 +3,13 @@ const items_by_type = (records, type) => records
   .filter(record => record.get('item').labels[0] === type)
   .map((record) => {
     const item = record.get('item')
+    
+    if (item.properties.points) {
+      item.properties.points = item.properties.points.toNumber()
+    }
+    
     return {
-      ...item.properties,
-      id: item.identity.low
+      ...item.properties
     }
   })
 
@@ -18,9 +22,8 @@ const expansions = (app, get_session) => {
         .run('MATCH (expansion:Expansion) RETURN expansion')
         .then(result => {
           let expansions = result.records.map(record => {    
-            const { identity, properties } = record.get('expansion')
+            const { properties } = record.get('expansion')
             return {
-              id: identity.low,
               ...properties
             }
           })
@@ -32,12 +35,11 @@ const expansions = (app, get_session) => {
     
   app.route('/expansions/:id')
     .get((req, res) => {
-      const id = Number(req.params.id)
+      const id = req.params.id
       const session = get_session()
       session
         .run(
-          `MATCH (expansion:Expansion)-[:Contains]->(item)
-           WHERE id(expansion) = {id}
+          `MATCH (expansion:Expansion {id: $id})-[:Contains]->(item)
            RETURN expansion, item`,
            { id }
         )
@@ -52,7 +54,6 @@ const expansions = (app, get_session) => {
             session.close()
             
             res.send({
-              id: expansion.identity.low,
               ...expansion.properties,
               pilots,
               ships,

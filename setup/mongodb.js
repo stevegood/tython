@@ -1,55 +1,85 @@
+import hash from 'string-hash'
 import { MongoClient } from 'mongodb'
 import mongodb_url from '../db/mongodb'
 
 const collection_data = {
   collections: [{
-    "owner": "stevegood",
-    "expansions": [
-      "595d591f82cfa10d304f1fca",
-      "595d591f82cfa10d304f1fcb",
-      "595d591f82cfa10d304f1fcc",
-      "595d591f82cfa10d304f1fcd",
-      "595d591f82cfa10d304f1fce"
-    ],
-    "pilots": [
-      "595d591f82cfa10d304f1fca",
-      "595d591f82cfa10d304f1fcb",
-      "595d591f82cfa10d304f1fcc",
-      "595d591f82cfa10d304f1fcd",
-      "595d591f82cfa10d304f1fce"
-    ],
-    "ships": [
-      "595d591f82cfa10d304f1fca",
-      "595d591f82cfa10d304f1fcb",
-      "595d591f82cfa10d304f1fcc",
-      "595d591f82cfa10d304f1fcd",
-      "595d591f82cfa10d304f1fce"
-    ],
-    "upgrades": [
-      "595d591f82cfa10d304f1fca",
-      "595d591f82cfa10d304f1fcb",
-      "595d591f82cfa10d304f1fcc",
-      "595d591f82cfa10d304f1fcd",
-      "595d591f82cfa10d304f1fce"
-    ]
+    owner: "stevegood",
+    expansions: [{
+      id: `ex${hash("Punishing One")}`,
+      name: "Punishing One"
+    }],
+    pilots: [],
+    ships: [],
+    upgrades: []
   }],
   squads: [{
-    "owner": "stevegood",
-    "faction": "scum",
-    "name": "Worlds list",
-    "points": 98,
-    "pilots": [{
-      "pilot": "595d591f82cfa10d304f1fcf",
-      "upgrades": [
-        "595d591f82cfa10d304f1fca",
-        "595d591f82cfa10d304f1fcb"
-      ]
+    name: "Worlds list",
+    owner: "stevegood",
+    faction: "scum",
+    points: 98,
+    pilots: [{
+      id: `pi${hash("Dengar")}`,
+      name: "Dengar",
+      points: 33,
+      upgrades: [{
+        id: `up${hash("Expertise")}`,
+        name: "Expertise",
+        points: 4
+      }, {
+        id: `up${hash("Plasma Torpedoes")}`,
+        name: "Plasma Torpedoes",
+        points: 3
+      }, {
+        id: `up${hash("Unhinged Astromech")}`,
+        name: "Unhinged Astromech",
+        points: 1
+      }, {
+        id: `up${hash("Punishing One")}`,
+        name: "Punishing One",
+        points: 12
+      }, {
+        id: `up${hash("Extra Munitions")}`,
+        name: "Extra Munitions",
+        points: 2
+      }, {
+        id: `up${hash("K4 Security Droid")}`,
+        name: "K4 Security Droid",
+        points: 3
+      }, {
+        id: `up${hash("Guidance Chips")}`,
+        name: "Guidance Chips",
+        points: 0
+      }]
     }, {
-      "pilot": "595d591f82cfa10d304f1fcx",
-      "upgrades": [
-        "595d591f82cfa10d304f1fca",
-        "595d591f82cfa10d304f1fcb"
-      ]
+      id: `pi${hash("Tel Trevura")}`,
+      name: "Tel Trevura",
+      points: 30,
+      upgrades: [{
+        id: `up${hash("Veteran Instincts")}`,
+        name: "Veteran Instincts",
+        points: 4
+      }, {
+        id: `up${hash("Plasma Torpedoes")}`,
+        name: "Plasma Torpedoes",
+        points: 3
+      }, {
+        id: `up${hash("Unhinged Astromech")}`,
+        name: "Unhinged Astromech",
+        points: 1
+      }, {
+        id: `up${hash("Extra Munitions")}`,
+        name: "Extra Munitions",
+        points: 2
+      }, {
+        id: `up${hash("K4 Security Droid")}`,
+        name: "K4 Security Droid",
+        points: 3
+      }, {
+        id: `up${hash("Guidance Chips")}`,
+        name: "Guidance Chips",
+        points: 0
+      }]
     }]
   }]
 }
@@ -96,6 +126,7 @@ const drop_collection = ({db, collection_name}) => new Promise((fulfill, reject)
 const fill_collection = ({db, collection_name}) => new Promise((fulfill, reject) => {
   console.log('Filling collection:', collection_name)
   const docs = collection_data[collection_name]
+  
   if (docs.length) {
     db.collection(collection_name)
       .insertMany(docs)
