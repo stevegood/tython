@@ -3,6 +3,7 @@ import {
   create_expansions,
   create_expansion_relationships
 } from './expansion-queries'
+import { create_factions } from './faction-queries'
 import {
   create_pilots,
   create_pilot_relationships
@@ -16,6 +17,7 @@ import {
   create_upgrades,
   create_upgrade_relationships
 } from './upgrade-queries'
+import { create_waves } from './wave-queries'
 
 const get_queries = () => [
   'MATCH (e)-[r]->(n) DELETE r',
@@ -23,10 +25,12 @@ const get_queries = () => [
 ].concat(
   create_actions(),
   create_expansions(),
+  create_factions(),
   create_ships(),
   create_slots(),
   create_pilots(),
   create_upgrades(),
+  create_waves(),
   create_expansion_relationships(),
   create_pilot_relationships(),
   create_ship_relationships(),

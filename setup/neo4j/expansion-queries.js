@@ -1,5 +1,11 @@
 import hash from 'string-hash'
-import expansions from '../data/expansions'
+import {
+  pilots,
+  ships,
+  sources as expansions,
+  upgrades
+} from 'xwing-data-module'
+import { pilot_id } from './pilot-queries'
 import {
   create_query,
   create_relationship_query,
@@ -9,9 +15,7 @@ import {
 const as_expansion = (item) => {
   let expansion = {...item}
   
-  delete expansion.pilots
-  delete expansion.ships
-  delete expansion.upgrades
+  delete expansion.contents
   
   return transform({
     ...expansion
@@ -26,34 +30,54 @@ const create_expansion_relationships = () => {
     const ex_id = `ex${hash(ex.name)}`
     
     // ships
-    queries = queries.concat(ex.ships.map(sh => create_relationship_query(
-      'Expansion',
-      'Contains',
-      'Ship',
-      {id: ex_id},
-      {id: `sh${hash(sh.name)}`},
-      { quantity: sh.qty }
-    )))
-    
+    queries = queries.concat(Object.keys(ex.contents.ships)
+      .map(id => ships.filter(ship => `${ship.id}` === `${id}`)[0])
+      .map(ship => create_relationship_query(
+        'Expansion',
+        'Contains',
+        'Ship',
+        {id: ex_id},
+        {id: `sh${hash(ship.name)}`},
+        {quantity: ex.contents.ships[`${ship.id}`]}
+      ))
+    )
+      
     // pilots
-    queries = queries.concat(ex.pilots.map(pi => create_relationship_query(
-      'Expansion',
-      'Contains',
-      'Pilot',
-      {id: ex_id},
-      {id: `pi${hash(pi.name)}`},
-      { quantity: pi.qty }
-    )))
+    queries = queries.concat(Object.keys(ex.contents.pilots)
+      .map(id => pilots.filter(pilot => `${pilot.id}` === `${id}`)[0])
+      .map(pilot => create_relationship_query(
+        'Expansion',
+        'Contains',
+        'Pilot',
+        {id: ex_id},
+        {id: pilot_id(pilot)},
+        {quantity: ex.contents.pilots[`${pilot.id}`]}
+      ))
+    )
     
     // upgrades
-    queries = queries.concat(ex.upgrades.map(up => create_relationship_query(
-      'Expansion',
-      'Contains',
-      'Upgrade',
-      {id: ex_id},
-      {id: `up${hash(up.name)}`},
-      { quantity: up.qty }
-    )))
+    queries = queries.concat(Object.keys(ex.contents.upgrades)
+      .map(id => upgrades.filter(upgrade => `${upgrade.id}` === `${id}`)[0])
+      .map(upgrade => create_relationship_query(
+        'Expansion',
+        'Contains',
+        'Upgrade',
+        {id: ex_id},
+        {id: `up${hash(upgrade.name)}`},
+        {quantity: ex.contents.upgrades[`${upgrade.id}`]}
+      ))
+    )
+  
+    // waves
+    if (ex.wave) {
+      queries.push(create_relationship_query(
+        'Expansion',
+        'Released',
+        'Wave',
+        {id: ex_id},
+        {id: `wv${hash(ex.wave)}`}
+      ))
+    }
   })
   
   return queries

@@ -6,16 +6,22 @@ import {
   transform
 } from './query-utils'
 
+const pilot_id = (pilot) => 'pi' + hash(`${pilot.name}${pilot.xdid || pilot.id}`)
+
 const as_pilot = (item) => {
   let pilot = {...item}
+  const id = pilot_id(pilot)
+  const xdid = pilot.id
   
   delete pilot.faction
   delete pilot.ship
   delete pilot.slots
   
-  return transform({
-    ...pilot
-  }, 'pi')
+  return {
+    ...pilot,
+    id,
+    xdid
+  }
 }
 
 const create_pilots = () => pilots.map(it => create_query('Pilot', as_pilot(it)))
@@ -25,7 +31,7 @@ const create_pilot_relationships = () => {
   
   
   pilots.forEach(pilot => {
-    const pi_id = `pi${hash(pilot.name)}`
+    const pi_id = pilot_id(pilot)
     // flies ship
     queries.push(create_relationship_query(
       'Pilot',
@@ -44,6 +50,14 @@ const create_pilot_relationships = () => {
         { id: `sl${hash(slot)}` }
       )))
     }
+    
+    queries.push(create_relationship_query(
+      'Pilot',
+      'Aligns',
+      'Faction',
+      { id: pi_id },
+      { id: `fa${hash(pilot.faction)}` }
+    ))
   })
   
   return queries
@@ -51,5 +65,6 @@ const create_pilot_relationships = () => {
 
 export {
   create_pilots,
-  create_pilot_relationships
+  create_pilot_relationships,
+  pilot_id
 }

@@ -94,9 +94,12 @@ const create_relationship_query = (left_type, relationship, right_type, left, ri
 }
 
 const transform = (item, prefix) => {
+  const id = `${prefix}${hash(item.name)}`
+  const xdid = item.id
   return {
     ...item,
-    id: `${prefix}${hash(item.name)}`
+    id,
+    xdid
   }
 }
 
