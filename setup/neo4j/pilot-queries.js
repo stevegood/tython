@@ -34,6 +34,16 @@ const create_pilot_relationships = () => {
       { id:  pi_id },
       { id: `sh${hash(pilot.ship)}` }
     ))
+    
+    if (pilot.slots) {
+      queries = queries.concat(pilot.slots.map(slot => create_relationship_query(
+        'Pilot',
+        'Has',
+        'Slot',
+        { id: pi_id },
+        { id: `sl${hash(slot)}` }
+      )))
+    }
   })
   
   return queries
