@@ -10,11 +10,11 @@ const mongodb_url = () => {
   const host = MONGODB_HOST || 'localhost'
   const port = MONGODB_PORT || 27017
 
-  console.log('\n** MongoDB ************************')
+  console.log('\n*** MongoDB ************************')
   console.log('    host:', host)
   console.log('    port:', port)
   console.log('    database:', MONGODB_DATABASE)
-  console.log('***********************************\n')
+  console.log('************************************\n')
 
   return `mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@${host}:${port}/${MONGODB_DATABASE}?authMechanism=DEFAULT`
 }

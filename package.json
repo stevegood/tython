@@ -22,6 +22,7 @@
     "neo4j-driver": "^1.3.0",
     "nodemon": "^1.11.0",
     "promise": "^8.0.0",
-    "string-hash": "^1.1.3"
+    "string-hash": "^1.1.3",
+    "xwing-data-module": "^1.0.6"
   }
 }

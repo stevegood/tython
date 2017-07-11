@@ -6,7 +6,13 @@ const get_driver = () => {
   if (!driver) {
     const { NEO4J_USERNAME, NEO4J_PASSWORD, NEO4J_URL } = process.env
     const auth = neo4j.auth.basic(NEO4J_USERNAME, NEO4J_PASSWORD)
-    driver = neo4j.driver( NEO4J_URL || 'bolt://localhost', auth)
+    const url = NEO4J_URL || 'bolt://localhost'
+    driver = neo4j.driver( url, auth)
+    
+    console.log('\n*** neo4j ************************')
+    console.log('    host:', url)
+    console.log('************************************\n')
+    
   }
   return driver
 }
