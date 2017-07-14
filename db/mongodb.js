@@ -4,8 +4,11 @@ const mongodb_url = () => {
     MONGODB_HOST,
     MONGODB_USERNAME,
     MONGODB_PASSWORD,
-    MONGODB_PORT
+    MONGODB_PORT,
+    MONGODB_URI
   } = process.env
+  
+  if (MONGODB_URI) return MONGODB_URI
 
   const host = MONGODB_HOST || 'localhost'
   const port = MONGODB_PORT || 27017
