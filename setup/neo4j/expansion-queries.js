@@ -17,6 +17,7 @@ const as_expansion = (item) => {
   let expansion = {...item}
   
   delete expansion.contents
+  delete expansion.wave
   
   return transform({
     ...expansion
