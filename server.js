@@ -11,22 +11,25 @@ import {
 } from './routes'
 
 setup_env()
+  .then(() => {
 
-const app = express()
-const port = process.env.PORT || 3999
+    const app = express()
+    const port = process.env.PORT || 3999
 
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
+    app.use(bodyParser.urlencoded({ extended: true }))
+    app.use(bodyParser.json())
 
-console.log('Connecting to MongoDB...')
-MongoClient.connect(mongodb_url(), (err, db) => {
-  if (err) return console.error(err)
-  
-  collection(app, db)
-  expansions(app, get_session)
-  pilots(app, get_session)
+    console.log('Connecting to MongoDB...')
+    MongoClient.connect(mongodb_url(), (err, db) => {
+      if (err) return console.error(err)
+      
+      collection(app, db)
+      expansions(app, get_session)
+      pilots(app, get_session)
 
-  app.listen(port)
+      app.listen(port)
 
-  console.log('Listening on port', port)
-})
+      console.log('Listening on port', port)
+    })
+
+  })

@@ -1,4 +1,5 @@
 import hash from 'string-hash'
+import romanize from 'romanize'
 import {
   pilots,
   ships,
@@ -75,7 +76,7 @@ const create_expansion_relationships = () => {
         'Released',
         'Wave',
         {id: ex_id},
-        {id: `wv${hash(ex.wave)}`}
+        {id: `wv${hash(romanize(ex.wave))}`}
       ))
     }
   })

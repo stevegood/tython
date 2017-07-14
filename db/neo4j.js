@@ -4,9 +4,19 @@ let driver
 
 const get_driver = () => {
   if (!driver) {
-    const { NEO4J_USERNAME, NEO4J_PASSWORD, NEO4J_URL } = process.env
-    const auth = neo4j.auth.basic(NEO4J_USERNAME, NEO4J_PASSWORD)
-    const url = NEO4J_URL || 'bolt://localhost'
+    const {
+      GRAPHENEDB_BOLT_PASSWORD,
+      GRAPHENEDB_BOLT_URL,
+      GRAPHENEDB_BOLT_USER,
+      NEO4J_USERNAME,
+      NEO4J_PASSWORD,
+      NEO4J_URL
+    } = process.env
+    const auth = neo4j.auth.basic(
+      GRAPHENEDB_BOLT_USER || NEO4J_USERNAME,
+      GRAPHENEDB_BOLT_PASSWORD || NEO4J_PASSWORD
+    )
+    const url = (GRAPHENEDB_BOLT_URL || NEO4J_URL) || 'bolt://localhost'
     driver = neo4j.driver( url, auth)
     
     console.log('\n*** neo4j ************************')

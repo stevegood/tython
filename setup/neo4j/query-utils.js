@@ -87,10 +87,10 @@ const create_query = (type, data) => {
 const create_relationship_query = (left_type, relationship, right_type, left, right, data) => {
   const rel_data = data ? `{${parse_obj_to_string(data)}}` : ''
   
-  return `
-    MATCH (l:${left_type}{id: '${left.id}'}), (r:${right_type}{id: '${right.id}'})
-    CREATE (l)-[:${relationship}${rel_data}]->(r)
-  `
+  return [
+    `MATCH (l:${left_type}{id: '${left.id}'}), (r:${right_type}{id: '${right.id}'})`,
+    `CREATE (l)-[:${relationship}${rel_data}]->(r)`
+  ].join('\n')
 }
 
 const transform = (item, prefix) => {
