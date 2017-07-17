@@ -3,6 +3,7 @@ import { ships } from 'xwing-data-module'
 import {
   create_query,
   create_relationship_query,
+  item_id,
   transform
 } from './query-utils'
 import { as_maneuver } from './maneuver-queries'
@@ -26,14 +27,14 @@ const create_ship_relationships = () => {
   ships
     .filter(ship => ship.actions && ship.actions.length > 0)
     .forEach(ship => {
-      const sh_id = `sh${hash(ship.name)}`
+      const sh_id = as_ship(ship).id
       queries = queries.concat(ship.actions.map(action => (
         create_relationship_query(
           'Ship',
           'Performs',
           'Action',
-          {id: sh_id},
-          {id: `ac${hash(action)}`}
+          { id: sh_id },
+          { id: item_id({ name: action }, 'ac') }
         )
       )))
       

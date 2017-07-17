@@ -1,27 +1,20 @@
 import hash from 'string-hash'
-import { pilots } from 'xwing-data-module'
+import { pilots, ships } from 'xwing-data-module'
 import {
   create_query,
   create_relationship_query,
+  item_id,
   transform
 } from './query-utils'
 
-const pilot_id = (pilot) => 'pi' + hash(`${pilot.name}${pilot.xdid || pilot.id}`)
-
 const as_pilot = (item) => {
   let pilot = {...item}
-  const id = pilot_id(pilot)
-  const xdid = pilot.id
   
   delete pilot.faction
   delete pilot.ship
   delete pilot.slots
   
-  return {
-    ...pilot,
-    id,
-    xdid
-  }
+  return transform({...pilot}, 'pi')
 }
 
 const create_pilots = () => pilots.map(it => create_query('Pilot', as_pilot(it)))
@@ -31,14 +24,15 @@ const create_pilot_relationships = () => {
   
   
   pilots.forEach(pilot => {
-    const pi_id = pilot_id(pilot)
+    const pi_id = item_id(pilot, 'pi')
+    const ship = ships.filter(ship => ship.name === pilot.ship)[0]
     // flies ship
     queries.push(create_relationship_query(
       'Pilot',
       'Flies',
       'Ship',
       { id:  pi_id },
-      { id: `sh${hash(pilot.ship)}` }
+      { id: item_id(ship, 'sh') }
     ))
     
     if (pilot.slots) {
@@ -47,7 +41,7 @@ const create_pilot_relationships = () => {
         'Has',
         'Slot',
         { id: pi_id },
-        { id: `sl${hash(slot)}` }
+        { id: item_id({name: slot}, 'sl') }
       )))
     }
     
@@ -56,7 +50,7 @@ const create_pilot_relationships = () => {
       'Aligns',
       'Faction',
       { id: pi_id },
-      { id: `fa${hash(pilot.faction)}` }
+      { id: item_id({name: pilot.faction}, 'fa') }
     ))
   })
   
@@ -65,6 +59,5 @@ const create_pilot_relationships = () => {
 
 export {
   create_pilots,
-  create_pilot_relationships,
-  pilot_id
+  create_pilot_relationships
 }

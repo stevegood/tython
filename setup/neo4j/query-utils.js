@@ -93,8 +93,19 @@ const create_relationship_query = (left_type, relationship, right_type, left, ri
   ].join('\n')
 }
 
+const item_id = (item, prefix) => {
+  let id = `${prefix}-${hash(item.name)}`
+  
+  if (item.id && item.xws) {
+    id = `${prefix}-${item.xws}-${item.id}`
+  }
+  
+  return id
+}
+
 const transform = (item, prefix) => {
-  const id = `${prefix}${hash(item.name)}`
+  const id = item_id(item, prefix)
+  
   const xdid = item.id
   return {
     ...item,
@@ -106,5 +117,6 @@ const transform = (item, prefix) => {
 export {
   create_query,
   create_relationship_query,
+  item_id,
   transform
 }

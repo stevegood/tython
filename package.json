@@ -28,6 +28,6 @@
     "rimraf": "^2.6.1",
     "romanize": "^1.1.1",
     "string-hash": "^1.1.3",
-    "xwing-data-module": "^1.0.6"
+    "xwing-data-module": "^0.42.0"
   }
 }

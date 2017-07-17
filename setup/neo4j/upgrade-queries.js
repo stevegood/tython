@@ -3,6 +3,7 @@ import { upgrades } from 'xwing-data-module'
 import {
   create_query,
   create_relationship_query,
+  item_id,
   transform
 } from './query-utils'
 
@@ -22,13 +23,13 @@ const create_upgrade_relationships = () => {
   let queries = []
   
   queries = queries.concat(upgrades.map(upgrade => {
-    const up_id = `up${hash(upgrade.name)}`
+    const up_id = item_id(upgrade, 'up')
     return create_relationship_query(
       'Upgrade',
       'Fits',
       'Slot',
       { id: up_id },
-      { id: `sl${hash(upgrade.slot)}` }
+      { id: item_id({name: upgrade.slot}, 'sl') }
     )
   }))
   
