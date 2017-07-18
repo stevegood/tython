@@ -81,8 +81,6 @@ const create_expansion_relationships = () => {
         announcement_date: ex. announcement_date || ex.announce_date
       }
       
-      console.log(released_meta)
-      
       queries.push(create_relationship_query(
         'Expansion',
         'Released',
