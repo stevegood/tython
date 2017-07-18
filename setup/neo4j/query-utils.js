@@ -96,7 +96,7 @@ const create_relationship_query = (left_type, relationship, right_type, left, ri
 const item_id = (item, prefix) => {
   let id = `${prefix}-${hash(item.name)}`
   
-  if (item.id && item.xws) {
+  if (item.xws && item.id >= 0) {
     id = `${prefix}-${item.xws}-${item.id}`
   }
   

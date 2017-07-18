@@ -1,4 +1,3 @@
-import hash from 'string-hash'
 import romanize from 'romanize'
 import {
   pilots,
@@ -27,8 +26,12 @@ const as_expansion = (item) => {
   }, 'ex')
 }
 
-const create_expansions = () => expansions.map(it => create_query('Expansion', as_expansion(it)))
+const create_expansions = () => {
+  console.log('Expansions: building queries...')
+  return expansions.map(it => create_query('Expansion', as_expansion(it)))
+}
 const create_expansion_relationships = () => {
+  console.log('Expansions: building relationship queries...')
   let queries = []
   
   expansions.forEach(ex => {

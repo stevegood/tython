@@ -1,4 +1,3 @@
-import hash from 'string-hash'
 import romanize from 'romanize'
 import {
   create_query,
@@ -34,7 +33,10 @@ const as_wave = (item) => transform({
   name: romanize(item.xdid)
 }, 'wv')
 
-const create_waves = () => waves.map(wave => create_query('Wave', as_wave(wave)))
+const create_waves = () => {
+  console.log('Waves: building queries...')
+  return waves.map(wave => create_query('Wave', as_wave(wave)))
+}
 
 export {
   create_waves

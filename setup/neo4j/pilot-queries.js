@@ -1,4 +1,3 @@
-import hash from 'string-hash'
 import { pilots, ships } from 'xwing-data-module'
 import {
   create_query,
@@ -17,9 +16,13 @@ const as_pilot = (item) => {
   return transform({...pilot}, 'pi')
 }
 
-const create_pilots = () => pilots.map(it => create_query('Pilot', as_pilot(it)))
+const create_pilots = () => {
+  console.log('Pilots: building queries...')
+  return pilots.map(it => create_query('Pilot', as_pilot(it)))
+}
 
 const create_pilot_relationships = () => {
+  console.log('Pilots: building relationship queries...')
   let queries = []
   
   

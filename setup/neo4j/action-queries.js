@@ -18,10 +18,13 @@ const get_actions = () => {
   return actions
 }
 
-const create_actions = () => Array.from(
-  new Set(get_actions()))
+const create_actions = () => {
+  console.log('Actions: building queries...')
+  return Array.from(
+    new Set(get_actions()))
     .map(action => create_query('Action', as_action(action))
-)
+  )
+}
 
 export {
   create_actions

@@ -92,6 +92,7 @@ const as_maneuver = (speed, color_index, direction_index) => {
 }
 
 const create_maneuvers = () => {
+  console.log('Maneuvers: building queries...')
   let queries = []
   
   speeds.forEach( speed => {

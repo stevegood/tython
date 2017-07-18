@@ -1,4 +1,3 @@
-import hash from 'string-hash'
 import { pilots } from 'xwing-data-module'
 import {
   create_query,
@@ -11,7 +10,10 @@ const as_faction = (faction) => transform({
   name: faction
 }, 'fa')
 
-const create_factions = () => factions.map(faction => create_query('Faction', as_faction(faction)))
+const create_factions = () => {
+  console.log('Factions: building queries...')
+  return factions.map(faction => create_query('Faction', as_faction(faction)))
+}
 
 export {
   create_factions

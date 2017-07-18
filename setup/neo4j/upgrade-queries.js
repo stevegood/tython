@@ -1,4 +1,3 @@
-import hash from 'string-hash'
 import { upgrades } from 'xwing-data-module'
 import {
   create_query,
@@ -17,9 +16,13 @@ const as_upgrade = (item) => {
   }, 'up')
 }
 
-const create_upgrades = () => upgrades.map(it => create_query('Upgrade', as_upgrade(it)))
+const create_upgrades = () => {
+  console.log('Upgrades: building queries...')
+  return upgrades.map(it => create_query('Upgrade', as_upgrade(it)))
+}
 
 const create_upgrade_relationships = () => {
+  console.log('Upgrades: building relationship queries...')
   let queries = []
   
   queries = queries.concat(upgrades.map(upgrade => {
