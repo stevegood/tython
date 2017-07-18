@@ -7,9 +7,8 @@ const pilots = (app, get_session) => {
         .run('MATCH (pilot:Pilot) RETURN pilot')
         .then(result => {
           let pilots = result.records.map( record => {
-            const { identity, properties } = record.get('pilot')
+            const { properties } = record.get('pilot')
             return {
-              id: identity.low,
               ...properties
             }
           })
