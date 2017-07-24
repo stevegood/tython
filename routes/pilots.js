@@ -1,3 +1,5 @@
+import { fix_ints } from '../db/neo4j'
+
 const pilots = (app, get_session) => {
   
   app.route('/pilots')
@@ -8,9 +10,9 @@ const pilots = (app, get_session) => {
         .then(result => {
           let pilots = result.records.map( record => {
             const { properties } = record.get('pilot')
-            return {
+            return fix_ints({
               ...properties
-            }
+            })
           })
           
           session.close()
