@@ -31,7 +31,23 @@ const get_session = () => {
   return get_driver().session()
 }
 
+const fix_ints = (obj) => {
+  let obj_out = {...obj}
+  const keys = Object.keys(obj_out)
+  
+  keys.forEach(key => {
+    let value = obj_out[key]
+    if (value.low !== undefined && value.high !== undefined) {
+      value = value.toNumber()
+    }
+    obj_out[key] = value
+  })
+  
+  return {...obj_out}
+}
+
 export {
+  fix_ints,
   get_driver,
   get_session
 }
