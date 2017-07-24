@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f1f39be5e3624d0991b91d895eb32bed)](https://www.codacy.com/app/sgood/tython?utm_source=github.com&utm_medium=referral&utm_content=stevegood/tython&utm_campaign=badger)
 [![Build Status](https://travis-ci.org/stevegood/tython.svg?branch=master)](https://travis-ci.org/stevegood/tython)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f1f39be5e3624d0991b91d895eb32bed)](https://www.codacy.com/app/sgood/tython?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=stevegood/tython&amp;utm_campaign=Badge_Grade)
 
