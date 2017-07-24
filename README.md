@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/stevegood/tython.svg?branch=master)](https://travis-ci.org/stevegood/tython)
 
 # Tython
-Backend application for Deep Core
+Backend application for [Deep Core](https://github.com/stevegood/deep_core)
 
 # Data Model
 
