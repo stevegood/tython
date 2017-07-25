@@ -1,11 +1,17 @@
 language: node_js
 node_js:
-  - 8
+- 8
 cache:
   directories:
-    - node_modules
+  - node_modules
 script:
-  - yarn test
+- yarn test
 notifications:
-    slack: extrememoderation:VJtsYtiLpOpJy9Krlq8rZpxv
-# TODO: deploy to heroku (or where ever)
+  slack: extrememoderation:VJtsYtiLpOpJy9Krlq8rZpxv
+deploy:
+  provider: heroku
+  app: tython
+  on:
+    tags: true
+  api_key:
+    secure: js0qa0+nDlMJfQooNB4eG7K9r531M1XwBmzIpL/ckn0Ex/dHckqSUCz8JY8lIsYkxRN0YRI3FRamVRFCNYjnxpD0Nk+J69PLICy8VWQ9rEo8T2HO32Sk9Esw6+gMFtbrMjb2Hp57LvindQuiBBGUCcEdMu/vyFNEw6AtWuzw6KlBdEZtut/+H0hMHg55EV7rfjvpJRPBpr3fIWsyJ+MT3wmkuOTIKshONee7Xln02bB0GvLfnuJEoYOWwB583cR3de0/SZd2i3RcrxRNEfk31pDKzOoUyP0Vf3TN4PA0UuTKVCm2jxDaGQrwOdOCRziEBQNCRNg+F0gTW0uFgJwGpUsL+1uy62bgVeGUBS6ypLb42/iPGdLVmXNA8bxY7A+zBcRd35V4spq9D1z2uGRlJoegG5n9x7Otcqtf5TvAyRoQkHBRJmhQJASvBXci83P7sMAm+BS9njrmx1k4PdtVgQTTQUVKLcB4sVMy/PaxbcsI5r3v73Wt/Gvm3JLOlQd8d+KnjlgqSZgtHxMPG3rPUdD2Mv5IPDMw/WCo75bJRNGPLPA346YN1MR/QUN7q2wrsomNaq1Zmpemr0eQ8qgm/WSLNB5LNTcBV2KiO8CN2P7Ukzt5PG2T5nF2pLmkQ79EB+SM/YyrvzaNlmV4gUCxlbaLaEH0hUD32Zl6vmuqPjA=
