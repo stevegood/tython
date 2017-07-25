@@ -6,5 +6,6 @@ cache:
     - node_modules
 script:
   - yarn test
-  
+notifications:
+    slack: extrememoderation:VJtsYtiLpOpJy9Krlq8rZpxv
 # TODO: deploy to heroku (or where ever)
