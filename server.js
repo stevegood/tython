@@ -8,7 +8,8 @@ import {
   collection,
   expansions,
   pilots,
-  waves
+  waves,
+  factions
 } from './routes'
 
 setup_env()
@@ -28,6 +29,7 @@ setup_env()
       expansions(app, get_session)
       pilots(app, get_session)
       waves(app, get_session)
+      factions(app, get_session)
 
       app.listen(port)
 
