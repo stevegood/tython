@@ -7,7 +7,8 @@ import mongodb_url from './db/mongodb'
 import {
   collection,
   expansions,
-  pilots
+  pilots,
+  waves
 } from './routes'
 
 setup_env()
@@ -26,6 +27,7 @@ setup_env()
       collection(app, db)
       expansions(app, get_session)
       pilots(app, get_session)
+      waves(app, get_session)
 
       app.listen(port)
 
