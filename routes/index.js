@@ -5,6 +5,7 @@ import waves from './waves'
 import factions from './factions'
 import actions from './actions'
 import slots from './slots'
+import upgrades from './upgrades'
 
 export {
   collection,
@@ -13,5 +14,6 @@ export {
   waves,
   factions,
   actions,
-  slots
+  slots,
+  upgrades
 }
