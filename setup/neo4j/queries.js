@@ -37,7 +37,8 @@ const get_queries = () => new Promise(fulfill => {
     create_expansion_relationships(),
     create_pilot_relationships(),
     create_ship_relationships(),
-    create_upgrade_relationships()
+    create_upgrade_relationships(),
+    ['MATCH (n) WHERE size((n)--())=0 DELETE (n)'] // delete nodes without relationships
   )
   
   fulfill(queries)
