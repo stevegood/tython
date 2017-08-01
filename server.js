@@ -12,7 +12,8 @@ import {
   factions,
   actions,
   slots,
-  upgrades
+  upgrades,
+  ships
 } from './routes'
 
 setup_env()
@@ -36,6 +37,7 @@ setup_env()
       actions(app, get_session)
       slots(app, get_session)
       upgrades(app, get_session)
+      ships(app, get_session)
 
       app.listen(port)
 
