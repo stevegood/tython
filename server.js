@@ -13,7 +13,8 @@ import {
   actions,
   slots,
   upgrades,
-  ships
+  ships,
+  maneuvers
 } from './routes'
 
 setup_env()
@@ -38,6 +39,7 @@ setup_env()
       slots(app, get_session)
       upgrades(app, get_session)
       ships(app, get_session)
+      maneuvers(app, get_session)
 
       app.listen(port)
 
