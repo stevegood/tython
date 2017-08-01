@@ -1,4 +1,5 @@
 import { collect, first, fix_ints } from '../db/neo4j'
+import { name_sort, speed_sort } from '../util/sorting'
 
 const capitalize = (string) => `${string.charAt(0).toUpperCase()}${string.slice(1)}`
 
@@ -12,12 +13,12 @@ const collect_maneuvers = (result) => {
       const m_records = result.records.filter(rec => 
         rec.get('maneuver').properties.id === maneuver.id
       )
-      const ships = collect('ship', m_records, (a, b) => a.name > b.name)
+      const ships = collect('ship', m_records, name_sort)
       maneuvers.push({ ...maneuver, ships })
     }
   })
   
-  return maneuvers
+  return maneuvers.sort(speed_sort)
 }
 
 const maneuvers = (app, get_session) => {
@@ -28,11 +29,7 @@ const maneuvers = (app, get_session) => {
       session
         .run('MATCH (maneuver:Maneuver)<-[:Executes]-(:Ship) RETURN maneuver')
         .then(result => {
-          const maneuvers = collect(
-            'maneuver',
-            result.records,
-            (a, b) => a.speed === b.speed ? 0 : (a.speed > b.speed ? 1 : -1)
-          )
+          const maneuvers = collect('maneuver', result.records, speed_sort)
           res.send({maneuvers})
         })
     })
@@ -48,22 +45,17 @@ const maneuvers = (app, get_session) => {
           RETURN maneuver, ship
         `, {id})
         .then(result => {
+          session.close()
           const maneuver = first('maneuver', result.records)
           
           if(maneuver) {
-            const ships = collect(
-              'ship',
-              result.records,
-              (a, b) => a.name> b.name
-            )
+            const ships = collect('ship', result.records, name_sort)
             
-            session.close()
             res.send({
               ...maneuver,
               ships
             })
           } else {
-            session.close()
             res.status(404).end()
           }
         })

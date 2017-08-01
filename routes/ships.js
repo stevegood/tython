@@ -1,4 +1,5 @@
 import { collect, first } from '../db/neo4j'
+import { name_sort, skill_sort, speed_sort} from '../util/sorting'
 
 const ships = (app, get_session) => {
   app.route('/ships')
@@ -8,9 +9,8 @@ const ships = (app, get_session) => {
       session
         .run('MATCH (ship:Ship) RETURN ship')
         .then(result => {
-          const ships = collect('ship', result.records)
-            
           session.close()
+          const ships = collect('ship', result.records, name_sort)
           res.send({ships})
         })
     })
@@ -28,35 +28,15 @@ const ships = (app, get_session) => {
           RETURN ship, action, pilot, maneuver
         `, {id})
         .then(result => {
+          session.close()
           const ship = first('ship', result.records)
           if (ship) {
-            const pilots = collect(
-              'pilot',
-              result.records,
-              (a, b) => a.skill === b.skill ? 0 : (a.skill > b.skill ? 1 : -1)
-            )
+            const pilots = collect('pilot', result.records, skill_sort)
+            const actions = collect('action', result.records, name_sort)
+            const maneuvers = collect('maneuver', result.records, speed_sort)
             
-            const actions = collect(
-              'action',
-              result.records,
-              (a, b) => a.name > b.name
-            )
-            
-            const maneuvers = collect(
-              'maneuver',
-              result.records,
-              (a, b) => a.speed === b.speed ? 0 : (a.speed > b.speed ? 1 : -1)
-            )
-            
-            session.close()
-            res.send({
-              ...ship,
-              actions,
-              maneuvers,
-              pilots
-            })
+            res.send({ ...ship, actions, maneuvers, pilots })
           } else {
-            session.close()
             res.status(404).end()
           }
         })

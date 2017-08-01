@@ -1,4 +1,5 @@
-import { fix_ints } from '../db/neo4j'
+import { collect, fix_ints } from '../db/neo4j'
+import { name_sort } from '../util/sorting'
 
 const pilots = (app, get_session) => {
   
@@ -8,12 +9,7 @@ const pilots = (app, get_session) => {
       session
         .run('MATCH (pilot:Pilot) RETURN pilot')
         .then(result => {
-          let pilots = result.records.map( record => {
-            const { properties } = record.get('pilot')
-            return fix_ints({
-              ...properties
-            })
-          })
+          let pilots = collect('pilot', result.records, name_sort)
           
           session.close()
           res.send({pilots})
@@ -36,6 +32,8 @@ const pilots = (app, get_session) => {
           {id}
         )
         .then(result => {
+          session.close()
+          
           if (result.records.length > 0) {
             let pilot
             let ship
@@ -73,6 +71,9 @@ const pilots = (app, get_session) => {
               }
             })
             
+            slots.sort(name_sort)
+            upgrades.sort(name_sort)
+            
             upgrades
               .filter(upgrade => (
                 !upgrade.end.properties.faction
@@ -81,10 +82,9 @@ const pilots = (app, get_session) => {
               .forEach(upgrade => {
                 slots
                   .filter(slot => slot.id === upgrade.start.properties.id)[0]
-                  .upgrades.push(fix_ints(upgrade.end.properties))
+                  .upgrades.push(fix_ints(upgrade.end.properties))  
               })
             
-            session.close()
             res.send({
               ...pilot,
               faction,

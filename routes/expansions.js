@@ -1,4 +1,5 @@
-import { fix_ints } from '../db/neo4j'
+import { collect, first, fix_ints } from '../db/neo4j'
+import { name_sort } from '../util/sorting'
 
 const items_by_type = (records, type) => records
   .filter(record => record.get('item').labels[0] === type)
@@ -18,13 +19,7 @@ const expansions = (app, get_session) => {
       session
         .run('MATCH (expansion:Expansion) RETURN expansion')
         .then(result => {
-          let expansions = result.records.map(record => {    
-            const { properties } = record.get('expansion')
-            return fix_ints({
-              ...properties
-            })
-          })
-          
+          let expansions = collect('expansion', result.records, name_sort)
           res.send({expansions})
           session.close()
         })
@@ -41,17 +36,15 @@ const expansions = (app, get_session) => {
            { id }
         )
         .then(result => {
-          console.log(result.summary)
-          if (result.records.length > 0) {
-            const expansion = result.records[0].get('expansion')
+          session.close()
+          const expansion = first('expansion', result.records)
+          if (expansion) {
             const ships = items_by_type(result.records, 'Ship')
             const pilots = items_by_type(result.records, 'Pilot')
             const upgrades = items_by_type(result.records, 'Upgrade')
-              
-            session.close()
             
             res.send(fix_ints({
-              ...expansion.properties,
+              ...expansion,
               pilots,
               ships,
               upgrades

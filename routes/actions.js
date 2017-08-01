@@ -1,4 +1,5 @@
-import { fix_ints } from '../db/neo4j'
+import { collect, first } from '../db/neo4j'
+import { name_sort } from '../util/sorting'
 
 const actions = (app, get_session) => {
   app.route('/actions')
@@ -8,10 +9,8 @@ const actions = (app, get_session) => {
       session
         .run('MATCH (action:Action) RETURN action')
         .then(result => {
-          const actions = result.records
-            .map(record => fix_ints(record.get('action').properties))
-            
           session.close()
+          const actions = collect('action', result.records, name_sort)
           res.send({actions})
         })
     })
@@ -28,18 +27,12 @@ const actions = (app, get_session) => {
           {id}
         )
         .then(result => {
-          if (result.records.length > 0) {
-            const action = result.records[0].get('action').properties
-            const ships = result.records
-              .map(record => fix_ints(record.get('ship').properties))
-              
-            session.close()
-            res.send(fix_ints({
-              ...action,
-              ships
-            }))
+          session.close()
+          const action = first('action', result.records)
+          if (action) {
+            const ships = collect('ship', result.records, name_sort)
+            res.send({ ...action, ships })
           } else {
-            session.close()
             res.status(404).end()
           }
         })

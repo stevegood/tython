@@ -1,4 +1,5 @@
-import { fix_ints } from '../db/neo4j'
+import { collect, first, fix_ints } from '../db/neo4j'
+import { name_sort } from '../util/sorting'
 
 const waves = (app, get_session) => {
   
@@ -8,14 +9,8 @@ const waves = (app, get_session) => {
       session
         .run('MATCH (wave:Wave) return wave')
         .then(result => {
-          const waves = result.records.map(record => {
-            const { properties } = record.get('wave')
-            return fix_ints({
-              ...properties
-            })
-          })
-          
           session.close()
+          const waves = collect('wave', result.records, name_sort)
           res.send({waves})
         })
     })
@@ -32,22 +27,22 @@ const waves = (app, get_session) => {
           {id}
         )
         .then(result => {
-          if (result.records.length > 0) {
-            const wave = result.records[0].get('wave').properties
+          session.close()
+          
+          const wave = first('wave', result.records)
+          if (wave) {
             const expansions = result.records.map(record => {
               return fix_ints({
                 ...record.get('expansion').properties,
                 ...record.get('released').properties
               })
-            })
+            }).sort(name_sort)
             
-            session.close()
-            res.send(fix_ints({
+            res.send({
               ...wave,
               expansions
-            }))
+            })
           } else {
-            session.close()
             res.status(404).end()
           }
         })
