@@ -46,7 +46,39 @@ const fix_ints = (obj) => {
   return {...obj_out}
 }
 
+const first = (type, records) => {
+  let item
+  
+  if (records.length > 0) {
+    const record = records[0]
+    if (record) {
+      item = fix_ints(record.get(type).properties)
+    }
+  }
+  
+  return item
+}
+
+const collect = (type, records, comparitor) => {
+  const items = []
+  
+  records.forEach(record => {
+    const { properties } = record.get(type)
+    if (properties && items.filter(it => it.id === properties.id).length === 0) {
+      items.push(fix_ints(properties))
+    }
+    
+    if (comparitor && typeof comparitor === 'function') {
+      items.sort(comparitor)
+    }
+  })
+  
+  return items
+}
+
 export {
+  collect,
+  first,
   fix_ints,
   get_driver,
   get_session

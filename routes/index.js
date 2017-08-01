@@ -6,6 +6,7 @@ import factions from './factions'
 import actions from './actions'
 import slots from './slots'
 import upgrades from './upgrades'
+import ships from './ships'
 
 export {
   collection,
@@ -15,5 +16,6 @@ export {
   factions,
   actions,
   slots,
-  upgrades
+  upgrades,
+  ships
 }
