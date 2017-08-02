@@ -1,4 +1,5 @@
-import { fix_ints } from '../db/neo4j'
+import { collect, first } from '../db/neo4j'
+import { name_sort, skill_sort } from '../util/sorting'
 
 const factions = (app, get_session) => {
   app.route('/factions')
@@ -8,13 +9,9 @@ const factions = (app, get_session) => {
       session
         .run('MATCH (faction:Faction) RETURN faction')
         .then(result => {
-          const factions = result.records
-            .map(record => fix_ints(record.get('faction').properties))
-          
           session.close()
-          res.send({
-            factions
-          })
+          const factions = collect('faction', result.records, name_sort)
+          res.send({ factions })
         })
     })
   
@@ -30,17 +27,16 @@ const factions = (app, get_session) => {
           {id}
         )
         .then(result => {
-          if (result.records.length > 0) {
-            const faction = result.records[0].get('faction').properties
-            const pilots = result.records
-              .map(record => fix_ints(record.get('pilot').properties))
+          session.close()
+          const faction = first('faction', result.records)
+          if (faction) {
+            const pilots = collect('pilot', result.records, skill_sort)
             
-            res.send(fix_ints({
+            res.send({
               ...faction,
               pilots
-            }))
+            })
           } else {
-            session.close()
             res.status(404).end()
           }
         })

@@ -8,9 +8,9 @@
   "license": "MIT",
   "scripts": {
     "start": "npm run setup && nodemon server.js --exec babel-node",
-    "start:dev": "nodemon server.js --exec babel-node",
-    "setup:dev": "babel-node dev_setup.js",
+    "start:dev": "npm run setup:dev && nodemon server.js --exec babel-node",
     "setup": "babel-node prod_setup.js",
+    "setup:dev": "babel-node dev_setup.js",
     "generate-queries": "babel-node generate-queries.js",
     "test": "jest",
     "patch": "release-it patch",

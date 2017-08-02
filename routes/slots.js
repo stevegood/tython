@@ -1,4 +1,5 @@
-import { fix_ints } from '../db/neo4j'
+import { collect, first } from '../db/neo4j'
+import { name_sort } from '../util/sorting'
 
 const slots = (app, get_session) => {
   app.route('/slots')
@@ -8,13 +9,9 @@ const slots = (app, get_session) => {
       session
         .run('MATCH (slot:Slot) RETURN slot')
         .then(result => {
-          const slots = result.records
-            .map(record => fix_ints(record.get('slot').properties))
-            
           session.close()
-          res.send({
-            slots
-          })
+          const slots = collect('slot', result.records, name_sort)
+          res.send({ slots })
         })
     })
   
@@ -30,20 +27,13 @@ const slots = (app, get_session) => {
           {id}
         )
         .then(result => {
-          if (result.records.length > 0) {
-            
-            const slot = result.records[0].get('slot').properties
-            const upgrades = result.records
-              .map(record => fix_ints(record.get('upgrade').properties))
-            
-            session.close()
-            res.send(fix_ints({
-              ...slot,
-              upgrades
-            }))
-            
+          session.close()
+          
+          const slot = first('slot', result.records)
+          if (slot) {
+            const upgrades = collect('upgrade', result.records, name_sort)
+            res.send({ ...slot, upgrades })
           } else {
-            session.close()
             res.status(404).end()
           }
         })
