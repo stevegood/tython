@@ -3657,9 +3657,9 @@ xtend@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/xtend/-/xtend-4.0.1.tgz#a5c6d532be656e23db820efb943a1f04998d63af"
 
-xwing-data-module@^0.45.0:
-  version "0.45.0"
-  resolved "https://registry.yarnpkg.com/xwing-data-module/-/xwing-data-module-0.45.0.tgz#02e0e0ae499c8018456819e3a9e6d05fd793a99e"
+xwing-data-module@^0.46.1:
+  version "0.46.1"
+  resolved "https://registry.yarnpkg.com/xwing-data-module/-/xwing-data-module-0.46.1.tgz#b50a6608d10c65b17ef55d45154490f70cf4ee7c"
 
 y18n@^3.2.1:
   version "3.2.1"
