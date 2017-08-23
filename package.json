@@ -1,6 +1,6 @@
 {
   "name": "tython",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Backend for Deep Core",
   "main": "server.js",
   "repository": "git@github.com:stevegood/tython.git",
