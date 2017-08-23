@@ -26,6 +26,8 @@ const waves = [{
   xdid: 10
 }, {
   xdid: 11
+}, {
+  xdid: 12
 }]
 
 const as_wave = (item) => transform({
